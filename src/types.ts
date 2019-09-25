@@ -4,8 +4,7 @@ export enum CameraMode {
 }
 
 export interface IButtons {
-	take_photo: HTMLButtonElement,
-	switch_cam: HTMLButtonElement
+	take_photo: HTMLButtonElement
 }
 
 export abstract class Defaults {

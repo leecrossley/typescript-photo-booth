@@ -4,9 +4,7 @@ import { CameraMode, Defaults } from './types.js';
 class PhotoBooth {
     static init() {
         PhotoBooth.buttons.take_photo = document.querySelector("button[name='take_photo']");
-        PhotoBooth.buttons.switch_cam = document.querySelector("button[name='switch_cam']");
         PhotoBooth.buttons.take_photo.onclick = () => { PhotoBooth.take_photo(); };
-        PhotoBooth.buttons.switch_cam.onclick = () => { PhotoBooth.switch_cam(); };
         navigator.mediaDevices.enumerateDevices()
             .then(PhotoBooth.on_enumerate_devices)
             .catch(PhotoBooth.on_error);
@@ -14,9 +12,6 @@ class PhotoBooth {
     static on_enumerate_devices(devices) {
         if (devices.length < 1) {
             PhotoBooth.buttons.take_photo.disabled = true;
-        }
-        if (devices.length < 2) {
-            PhotoBooth.buttons.switch_cam.disabled = true;
         }
         return PhotoBooth.init_camera();
     }
@@ -36,16 +31,12 @@ class PhotoBooth {
         let a = document.createElement('a');
         a.href = url;
         a.target = '_blank';
-        a.download = 'photo.jpeg';
+        a.download = new Date() + '-photo.jpeg';
         a.click();
-    }
-    static switch_cam() {
-        PhotoBooth.mode = (PhotoBooth.mode == CameraMode.User) ? CameraMode.Environment : CameraMode.User;
-        PhotoBooth.init_camera();
     }
 }
 PhotoBooth.mode = CameraMode.Environment;
-PhotoBooth.buttons = { take_photo: null, switch_cam: null };
+PhotoBooth.buttons = { take_photo: null };
 PhotoBooth.on_get_media = (stream) => {
     PhotoBooth.canvas = document.createElement('canvas');
     PhotoBooth.video = document.querySelector('video');
